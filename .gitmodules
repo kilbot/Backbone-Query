@@ -1,0 +1,3 @@
+[submodule "qparser"]
+	path = qparser
+	url = https://github.com/kilbot/qparser.git
