@@ -48,5 +48,6 @@ module.exports = function(grunt) {
   });
 
   require('load-grunt-tasks')(grunt);
-  grunt.registerTask('default', ['jshint', 'simplemocha', 'watch']);
+  grunt.registerTask('default', ['jshint', 'simplemocha']);
+  grunt.registerTask('dev', ['default', 'watch']);
 }

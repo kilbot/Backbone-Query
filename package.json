@@ -20,6 +20,7 @@
     "url": "https://github.com/kilbot/backbone-query/issues"
   },
   "devDependencies": {
+    "backbone": "^1.1.2",
     "chai": "^2.1.0",
     "grunt": "^0.4.1",
     "grunt-contrib-jshint": "^0.11.0",
