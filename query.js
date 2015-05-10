@@ -108,7 +108,7 @@ function matchMaker(tokens, model){
  */
 module.exports = function(filter, model){
   var tokens = _.isArray(filter) ? filter : parser.parse(filter);
-  //this._tokens = tokens;
+  this._tokens = tokens;
 
   // allow model specific match maker
   if(model.matchMaker){
