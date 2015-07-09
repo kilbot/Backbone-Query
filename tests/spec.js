@@ -1,7 +1,7 @@
 var Backbone = require('backbone');
 
 var model = new Backbone.Model({
-  title: 'Woo Logo',
+  title: 'Woo Logo Hy-phen "spécîäl" доступ مدفوع',
   id: 5,
   bool: true,
   boolean: false,
@@ -59,6 +59,18 @@ describe('simple queries', function(){
   it('should match spaced query on title', function () {
     query('woo lo', model).should.be.true;
     query('woo foo', model).should.be.false;
+  });
+
+  it('should match dashed query on title', function () {
+    query('hy-phen', model).should.be.true;
+  });
+
+  it('should match special characters query on title', function () {
+    query('spéc', model).should.be.true;
+  });
+
+  it('should match foreign characters query on title', function () {
+    query('مدفوع', model).should.be.true;
   });
 
   it('should match an attribute with string value', function () {
