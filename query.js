@@ -1,6 +1,6 @@
 var _ = require('lodash');
-var Parser = require('./qparser/qparser');
-var parser = new Parser();
+var Parser = require('query-parser');
+var parse = new Parser();
 
 function toType(obj) {
   return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
@@ -107,8 +107,8 @@ function matchMaker(tokens, model){
  * @returns {Boolean}
  */
 module.exports = function(filter, model){
-  var tokens = _.isArray(filter) ? filter : parser.parse(filter);
-  this._tokens = tokens;
+  var tokens = _.isArray(filter) ? filter : parse(filter);
+  //this._tokens = tokens;
 
   // allow model specific match maker
   if(model.matchMaker){

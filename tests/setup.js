@@ -1,5 +1,5 @@
 var jsdom = require('jsdom').jsdom;
-global.document = jsdom('qparser tests');
+global.document = jsdom('backbone query tests');
 global.window = global.document.parentWindow;
 global._ = require('lodash');
 

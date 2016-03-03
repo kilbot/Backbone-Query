@@ -13,13 +13,6 @@ module.exports = function(grunt) {
       }
     },
 
-    uglify: {
-      build: {
-        src: 'query.js',
-        dest: 'query.min.js'
-      }
-    },
-
     simplemocha: {
       options: {
         globals: ['should'],
