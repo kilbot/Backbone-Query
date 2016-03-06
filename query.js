@@ -26,9 +26,10 @@ var methods = {
       .compact()
       .value();
 
-    return _.any( attributes, function( attribute ) {
-      return this._partialString(attribute, token.query.toLowerCase());
-    }, this);
+    var self = this;
+    return _.some( attributes, function( attribute ) {
+      return self._partialString(attribute, token.query.toLowerCase());
+    });
   },
 
   /**
@@ -53,9 +54,10 @@ var methods = {
    * @return {Boolean}
    */
   or: function(token, model){
-    return _.any(token.queries, function(t){
-      return this[t.type](t, model);
-    }, this);
+    var self = this;
+    return _.some(token.queries, function(t){
+      return self[t.type](t, model);
+    });
   },
 
   _string: function(str, value){
@@ -84,7 +86,7 @@ var methods = {
   },
 
   _array: function(arr, value){
-    return _.any(arr, function(elem){
+    return _.some(arr, function(elem){
       return elem.toLowerCase() === value;
     });
   }
@@ -94,7 +96,7 @@ var methods = {
 function matchMaker(tokens, model){
   // match tokens
   // todo: all = AND, any = OR
-  return _.all(tokens, function(token){
+  return _.every(tokens, function(token){
     return methods[token.type](token, model);
   });
 }
