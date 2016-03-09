@@ -1,6 +1,4 @@
 var _ = require('lodash');
-var Parser = require('query-parser');
-var parse = new Parser();
 
 function toType(obj) {
   return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
@@ -38,10 +36,16 @@ var methods = {
    */
   prefix: function(token, model){
     token = token || {};
-    if(!_.isString(token.query)){ return false; }
+    if(_.isFunction(token.query)){
+      return token.query(model.get(token.prefix));
+    }
+
+    if(!_.isString(token.query)){
+      token.query = token.query.toString();
+    }
 
     var attr = model.get(token.prefix),
-      type = toType(attr);
+        type = toType(attr);
 
     // _boolean, _array etc
     if(this.hasOwnProperty('_' + type)){
@@ -93,29 +97,10 @@ var methods = {
 
 };
 
-function matchMaker(tokens, model){
+module.exports = function(model, filterArray){
   // match tokens
   // todo: all = AND, any = OR
-  return _.every(tokens, function(token){
-    return methods[token.type](token, model);
+  return _.every(filterArray, function(filter){
+    return methods[filter.type](filter, model);
   });
-}
-
-/**
- * Match Maker
- * return true or false for model based on Qparser tokens
- * @param {String|Array} filter
- * @param {Object} model
- * @returns {Boolean}
- */
-module.exports = function(filter, model){
-  var tokens = _.isArray(filter) ? filter : parse(filter);
-  //this._tokens = tokens;
-
-  // allow model specific match maker
-  if(model.matchMaker){
-    return model.matchMaker(tokens, methods, matchMaker);
-  } else {
-    return matchMaker(tokens, model);
-  }
 };

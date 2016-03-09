@@ -1,4 +1,7 @@
 var Backbone = require('backbone');
+var Parser = require('query-parser');
+var parse = new Parser();
+var query = require('../query');
 
 var model = new Backbone.Model({
   title: 'Woo Logo Hy-phen "spécîäl" доступ مدفوع',
@@ -41,62 +44,59 @@ var model = new Backbone.Model({
   }]
 });
 
-var query = require('../query');
-
-
 describe('simple queries', function(){
 
   it('should match simple query on title', function () {
-    query('woo', model).should.be.true;
-    query('foo', model).should.be.false;
+    query(model, parse('woo')).should.be.true;
+    query(model, parse('foo')).should.be.false;
   });
 
   it('should match capitalized query on title', function () {
-    query('WOO', model).should.be.true;
-    query('Log', model).should.be.true;
+    query(model, parse('WOO')).should.be.true;
+    query(model, parse('Log')).should.be.true;
   });
 
   it('should match spaced query on title', function () {
-    query('woo lo', model).should.be.true;
-    query('woo foo', model).should.be.false;
+    query(model, parse('woo lo')).should.be.true;
+    query(model, parse('woo foo')).should.be.false;
   });
 
   it('should match dashed query on title', function () {
-    query('hy-phen', model).should.be.true;
+    query(model, parse('hy-phen')).should.be.true;
   });
 
   it('should match special characters query on title', function () {
-    query('spéc', model).should.be.true;
+    query(model, parse('spéc')).should.be.true;
   });
 
   it('should match foreign characters query on title', function () {
-    query('مدفوع', model).should.be.true;
+    query(model, parse('مدفوع')).should.be.true;
   });
 
   it('should match an attribute with string value', function () {
-    query('barcode:sku12345', model).should.be.true;
-    query('barcode:sku', model).should.be.false;
+    query(model, parse('barcode:sku12345')).should.be.true;
+    query(model, parse('barcode:sku')).should.be.false;
   });
 
   it('should match an attribute with numeric value', function () {
-    query('id:5', model).should.be.true;
-    query('id:6', model).should.be.false;
+    query(model, parse('id:5')).should.be.true;
+    query(model, parse('id:6')).should.be.false;
   });
 
   it('should match an attribute with boolean value', function () {
-    query('bool:true', model).should.be.true;
-    query('bool:false', model).should.be.false;
-    query('bool:tru', model).should.be.false;
-    query('boolean:TRUE', model).should.be.false;
-    query('boolean:FALSE', model).should.be.true;
-    query('boolean:FAL', model).should.be.false;
-    query('bool:1', model).should.be.false;
+    query(model, parse('bool:true')).should.be.true;
+    query(model, parse('bool:false')).should.be.false;
+    query(model, parse('bool:tru')).should.be.false;
+    query(model, parse('boolean:TRUE')).should.be.false;
+    query(model, parse('boolean:FALSE')).should.be.true;
+    query(model, parse('boolean:FAL')).should.be.false;
+    query(model, parse('bool:1')).should.be.false;
   });
 
   it('should match an attribute with an array value', function () {
-    query('categories:Music', model).should.be.true;
-    query('categories:Mus', model).should.be.false;
-    query('categories:posters', model).should.be.true;
+    query(model, parse('categories:Music')).should.be.true;
+    query(model, parse('categories:Mus')).should.be.false;
+    query(model, parse('categories:posters')).should.be.true;
   });
 
 });
@@ -104,13 +104,13 @@ describe('simple queries', function(){
 describe('complex queries', function(){
 
   it('should match piped queries on title', function () {
-    query('woo|foo', model).should.be.true;
-    query('foo|bar', model).should.be.false;
+    query(model, parse('woo|foo')).should.be.true;
+    query(model, parse('foo|bar')).should.be.false;
   });
 
   it('should match piped queries on attribute', function () {
-    query('id:5|id:6', model).should.be.true;
-    query('id:1|id:7', model).should.be.false;
+    query(model, parse('id:5|id:6')).should.be.true;
+    query(model, parse('id:1|id:7')).should.be.false;
   });
 
 });
